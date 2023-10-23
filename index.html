@@ -1,8 +1,56 @@
-<form action="/posts" method="post">
-    <input type="text" name="title" placeholder="Título">
-    <input type="text" name="body" placeholder="Corpo">
-    <input type="text" name="author" placeholder="Autor">
-    <input type="datetime-local" name="publishedAt" placeholder="Data de publicação">
-    <input type="text" name="tags" placeholder="Tags">
-    <button type="submit">Criar post</button>
-  </form>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>Formulário de cadastro</title>
+    <script src="script.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 16px;
+        }
+
+        form {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            color: white;
+            background-color: #000;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <form action="script.js" method="post">
+        <input type="text" name="nome" placeholder="Nome">
+        <input type="email" name="email" placeholder="E-mail">
+        <input type="date" name="data_nascimento" placeholder="Data de nascimento">
+        <input type="datetime-local" name="data_criacao" placeholder="Data de criação">
+        <input type="submit" value="Cadastrar">
+    </form>
+</body>
+</html>

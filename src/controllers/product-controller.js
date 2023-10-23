@@ -22,16 +22,36 @@ exports.getAll = (req, res, next) => {
         });
 }
 
-exports.get = (req, res, next) => {
-    Product
-        .find({
-            codigo: req.params.codigo
+exports.get = (req, response, next) => {
+    getToken().then(token => {
+        const getOptions = {
+            method: 'get',
+            url: `http://168.138.231.9:10666/cadastro/${req.params.codigo}`,
+            headers: {
+                'authorization': `Bearer ${token}`,
+                'content-type': 'application/json'
+            }
+        }
+        apiService(getOptions).then(resApi => {
+            console.log('resApi' , resApi)
+            Product
+                .find({
+                    codigo: req.params.codigo
+                })
+                .then(data => {
+                    console.log('data' , data)
+                    const person = {
+                        nome: data[0].nome,
+                        data_nascimento: data[0].data_nascimento,
+                        email: resApi[0].email,
+                        data_criacao: resApi[0].data_criacao
+                    }
+                    response.status(200).send(person);
+                }).catch(e => {
+                    response.status(400).send(e);
+                });
         })
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(e => {
-            res.status(400).send(e);
-        });
+    })
 }
 
 exports.post = (req, response, next) => {
@@ -79,6 +99,6 @@ exports.post = (req, response, next) => {
         })
 
     })
-    
+
 
 };
