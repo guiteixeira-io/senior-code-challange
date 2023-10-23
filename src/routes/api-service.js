@@ -1,8 +1,6 @@
 const axios = require('axios');
 
-const url = 'http://168.138.231.9:10666/cadastro';
-
-const postCadaster = (options) => {
+const apiService = (options) => {
 console.log('options' , options)
   return axios(options)
   .then((response) => {
@@ -17,4 +15,4 @@ console.log('options' , options)
   });
 }
 
-  module.exports = postCadaster;
+  module.exports = apiService;
