@@ -2,47 +2,30 @@
 
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
+const getToken = require('../routes/authentication');
+const postCadaster = require('../routes/api-cadastro');
+const { application } = require('express');
+
+const url = 'http://168.138.231.9:10666/cadastro';
+
+exports.getAll = (req, res, next) => {
+    getToken().then(res => {
+        console.log('authentication', res)
+    })
+
+    Product
+        .find()
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+        });
+}
 
 exports.get = (req, res, next) => {
     Product
         .find({
-            active: true
-        }, 'title price slug')
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(e => {
-            res.status(400).send(e);
-        });
-}
-
-exports.getBySlug = (req, res, next) => {
-    Product
-        .findOne({
-            slug: req.params.slug,
-            active: true
-        }, 'title description price slug tags')
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(e => {
-            res.status(400).send(e);
-        });
-}
-
-exports.getById = (req, res, next) => {
-    Product
-        .findById(req.params.id)
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(e => {
-            res.status(400).send(e);
-        });
-}
-
-exports.getByTag = (req, res, next) => {
-    Product
-        .find({
-            tags: req.params.tag,
-            active: true
+            codigo: req.params.codigo
         })
         .then(data => {
             res.status(200).send(data);
@@ -52,54 +35,34 @@ exports.getByTag = (req, res, next) => {
 }
 
 exports.post = (req, res, next) => {
+    getToken().then(token => {
+        console.log('authentication', token)
+        const options = {
+            method: 'post',
+            url,
+            data: req.body,
+            headers: {
+                'authorization': `Bearer ${token}`,
+                'content-type': 'application/json'
+            }
+        }
+        postCadaster(options).then(res => {
+            console.log('Retorno do cadastro', res)
+        })
+        
+    })
     var product = new Product(req.body);
     product
         .save()
         .then(x => {
-            res.status(201).send({
-                message: 'Produto cadastrado com sucesso!'
+            res.status(200).send({
+                message: 'Cadastrado com sucesso!'
             });
         }).catch(e => {
             res.status(400).send({
-                message: 'Falha ao cadastrar produto!',
+                message: 'Falha ao cadastrar!',
                 data: e
             });
         });
 
-};
-
-exports.put = (req, res, next) => {
-    Product
-    .findByIdAndUpdate(req.params.id, {
-        $set: {
-            title: req.body.title,
-            description: req.body.description,
-            price: req.body.price,
-            slug: req.body.slug
-        }
-    }).then(x => {
-        res.status(200).send({
-            message: 'Produto atualizado com sucesso!'
-        });
-    }).catch(e => {
-        res.status(400).send({
-            message: 'Falha ao atualizar produto!',
-            data: e
-        });
-    });
-};
-
-exports.delete = (req, res, next) => {
-    Product
-    .findOneAndRemove(req.body.id,)
-    .then(x => {
-        res.status(200).send({
-            message: 'Produto removido com sucesso!'
-        });
-    }).catch(e => {
-        res.status(400).send({
-            message: 'Falha ao remover produto!',
-            data: e
-        });
-    });
 };
