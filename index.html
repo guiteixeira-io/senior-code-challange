@@ -45,12 +45,15 @@
     </style>
 </head>
 <body>
-    <form action="script.js" method="post">
+    <form action="javascript:void(0)" method="post" onsubmit="submit()">
         <input type="text" name="nome" placeholder="Nome">
         <input type="email" name="email" placeholder="E-mail">
         <input type="date" name="data_nascimento" placeholder="Data de nascimento">
         <input type="datetime-local" name="data_criacao" placeholder="Data de criação">
         <input type="submit" value="Cadastrar">
     </form>
+    <script src="script.js">function submit(){
+      cadastrar()
+    }</script>
 </body>
 </html>

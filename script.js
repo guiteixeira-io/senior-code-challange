@@ -1,4 +1,5 @@
-  // Obtém os valores dos campos de entrada
+function cadastrar() {
+      // Obtém os valores dos campos de entrada
   const nome = document.querySelector("input[name='nome']").value;
   const email = document.querySelector("input[name='email']").value;
   const dataNascimento = document.querySelector("input[name='data_nascimento']").value;
@@ -34,3 +35,4 @@
           console.log(err);
       });
   
+}
